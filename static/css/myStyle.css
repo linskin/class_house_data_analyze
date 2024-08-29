@@ -1,0 +1,264 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background-color: #EFF0F4;
+}
+
+.header {
+  display: flex;
+  height: 70px;
+  background-color: white;
+  font-size: 16px;
+}
+
+.header_left {
+  width: 252px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.line {
+  width: 1px;
+  height: 16px;
+  margin: 27px 0px;
+  background-color: #dddddd;
+}
+
+.header_right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  position: relative;
+}
+
+.bottomLine {
+  position: absolute;
+  bottom: 0;
+  left: 49%;
+  width: 32px;
+  height: 4px;
+  background-color: #1672FD;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.section {
+  height: 50px;
+  padding-left: 15px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.main {
+  display: flex;
+}
+
+.aside {
+  width: 252px;
+  height:100vh;
+  background-color: white;
+  box-shadow: 0px 2px 8px 0px #11234522;
+  border-radius: 1px;
+}
+
+.aside_title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 20px 16px 12px 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #F0F0F0;
+}
+
+
+.aside_content>a {
+  cursor: pointer;
+  height: 38px;
+  margin: 0px 8px;
+  padding-left: 30px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #333333;
+}
+
+
+.dot {
+  width: 8px;
+  height: 8px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background-color: white;
+}
+
+.map {
+  flex: 1;
+  background-color: white;
+  border-radius: 4px;
+  margin: 0px 20px;
+}
+
+.myTable {
+  flex: 1;
+  background-color: white;
+  margin: 0px 20px;
+  font-size:12px;
+}
+
+a:hover {
+  color: #1672FD;
+}
+
+a:active,
+a:link,
+a:active {
+  color: #333333;
+
+}
+
+.selectAside {
+  padding: 27px 16px 0px 16px;
+}
+
+.aside_item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.selectAside select {
+  width: 120px;
+  height: 40px;
+  border-radius: 4px;
+  border: 1px solid #EEEEEE;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  padding-left: 12px;
+  padding-right: 12px;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  background: url('../img/arrow.png') no-repeat right center #F7F8FA;
+  background-size: 12px 12px;
+  font-size:12px;
+}
+
+.btn {
+  margin-top: 23px;
+  width: 100px;
+  height: 28px;
+  color: white;
+  background-color: #1672FD;
+  border-radius: 28px;
+  padding: 3px 36px;
+  outline: none;
+}
+
+.btn:hover {
+  background-color: #1672FD;
+  color: white;
+}
+
+.selectAside_title {
+  line-height: 40px;
+  margin-bottom: 10px;
+  color: #999999;
+  font-size: 12px;
+  width:30px;
+}
+
+.main_aside {
+  width: 516px;
+  background-color: white;
+  box-shadow: 0px 2px 8px 0px #11234522;
+  border-radius: 1px;
+  padding: 27px 21px 0px 16px;
+}
+
+.main_aside_new {
+  width: 516px;
+  background-color: white;
+  box-shadow: 0px 2px 8px 0px #11234522;
+  border-radius: 1px;
+  padding: 25px 21px 25px 16px;
+  overflow-y: auto;
+}
+
+.mapDetail {
+  flex: 1;
+  padding: 20px;
+  margin: 0px 20px;
+  background-color: white;
+}
+
+.primaryTitle {
+  font-weight: 700;
+  color: #333333;
+  display: flex;
+  align-items: center;
+}
+
+.titleLine {
+  width: 6px;
+  height: 14px;
+  background-color: #1672FD;
+  margin-right: 10px;
+}
+
+.content {
+  display: flex;
+  padding-left: 16px;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.content_layout {
+  display: flex;
+  width: 200px;
+  margin-top: 22px;
+}
+
+.label {
+  width: 70px;
+  color: #666666;
+}
+
+.words {
+  width: 130px;
+  color: #333333;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.longWords {
+  flex: 1;
+}
+
+.main_aside_line {
+  margin-bottom: 28px;
+}
+
+.bottomContent {
+  display: flex;
+  margin-top: 22px;
+  font-size: 14px;
+  padding-left: 16px;
+}
+.table_row{
+    font-size:10 !important;
+    line-height:1 !important;
+    color:red !important;
+}
+.img1{
+    width: 163px;
+    height: 16px;
+    content:url(../img/Frame.png);
+}

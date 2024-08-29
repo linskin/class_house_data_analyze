@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8" />
+	    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+		<title>智慧房源探索平台</title>
+		<link rel="stylesheet" href="{% static 'css/layout.css' %}" />
+		<script src="{% static 'js/echarts.min.js' %}"></script>
+		<script src="{% static 'js/china.js' %}"></script>
+		<script src="{% static 'js/wordcount.min.js' %}"></script>
+		<script src="{% static 'js/chart1.js' %}"></script>
+		<script src="{% static 'js/chart2.js' %}"></script>
+		<script src="{% static 'js/chart3.js' %}"></script>
+		<script src="{% static 'js/chart4.js' %}"></script>
+		<script src="{% static 'js/chart5.js' %}"></script>
+	</head>
+	
+	<body>
+
+		<div class="header">
+			<div id='currentTime'></div>			
+			
+			<div class='title-wrapper'>
+				<div class='title-wrapper1'>
+					<div id='title-text'>
+						<h1 class="header-title">智慧房源探索平台</h1>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="wrapper">
+			<div class="content">
+				<div class="col col-l">
+					<div class="xpanel-wrapper xpanel-wrapper-50">
+							<div class="xpanel xpanel-l-t">
+								<div class="title" ><a href="/shandong/" style="text-decoration: none;font-size:16px;">山东省各城市房价均值</a></div>
+								<div class="xpanel-wrapper" id="house_mean"></div>
+							</div>
+					</div>
+					<div class="xpanel-wrapper xpanel-wrapper-50">
+							<div class="xpanel xpanel-l-b">
+								<div class="title">全国各城市房源数量</div>
+								<div class="xpanel-wrapper" id="tree_chart"></div>
+							</div>
+					</div>
+				</div>
+				<div class="col col-c">
+
+					<div class="xpanel-wrapper">
+							<div class="xpanel xpanel-c-b">
+								<div class="title title-long">全国房源数量</div>
+								<div class="xpanel-wrapper" id="map_chart" >全国房源数量</div>
+							</div>
+					</div>
+				</div>
+				<div class="col col-r">
+					<div class="xpanel-wrapper xpanel-wrapper-50">
+							<div class="xpanel xpanel-r-t">
+								<div class="title">山东省挂牌时间房源数量</div>
+								<div class='xpanel-wrapper' id="year_chart"></div>
+							</div>
+					</div>
+					<div class="xpanel-wrapper xpanel-wrapper-50">
+							<div class="xpanel xpanel-r-m">
+								<div class="title">房价影响因素</div>
+								<div class='xpanel-wrapper' id="word_chart"></div>
+
+							</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+	</body>
+</html>
+<script src="{% static 'js/time_show.js' %}"></script>
+<script>
+	all_map_data={{ all_map_data }};
+	second_map_data={{ second_map_data }};
+	price_mean={{ price_mean }};
+	all_data={{ all_data }};
+	year_data={{ year_data }};
+	word_data={{ word_data }};
+	chart_1();
+	chart_2();
+	chart_3();
+	chart_4();
+	chart_5();
+
+	//加载页面后刷新
+	function refresh(){
+		if(sessionStorage.getItem("isReload")){
+		   console.log("页面被刷新");
+		}else{
+			console.log("首次被加载");
+			window.location.reload();
+			sessionStorage.setItem("isReload", true)
+			}
+		}
+	window.onload = refresh;
+</script>

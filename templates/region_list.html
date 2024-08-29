@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>山东省{{ city_name }}{{ region_name }}房源信</title>
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/bootstrap-table.min.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/myStyle.css' %}" />
+    <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap-table.min.js' %}"></script>
+
+</head>
+<body>
+	<header class="header">
+		<div class="header_left">
+			<img class="img1" alt="" src="{% static 'img/Frame.png' %}">
+		</div>
+		<div class="line"></div>
+		<div class="header_right">
+			<span class="header_title">山东省{{ city_name }}{{ region_name }}房源信</span>
+			<span class="bottomLine"></span>
+		</div>
+	</header>
+	<section class="section">
+		<div class="bread">
+			<span style="color: #1672FD; cursor: pointer;" id="screen">大屏</span>
+			<span style="color: #999999">></span>
+			<span style="color: #1672FD; cursor: pointer;" id="province">山东省房源</span>
+			<span style="color: #999999">></span>
+			<span style="color: #1672FD; cursor: pointer;" id="city">{{ city_name }}</span>
+			<span style="color: #999999">></span>
+			<span>{{ region_name }}房源</span>
+		</div>
+	</section>
+	<main class="main">
+		<form method="get" name="tasksubmit">
+			<aside class="aside selectAside">
+				{% for key,values in select_data.items %}
+					<div class="aside_item">
+						<div class="selectAside_title">{{ key|slice:":2" }}</div>
+						<select name="select_list" id="select{{ forloop.counter }}">
+							 <option value="0" >请选择...</option>
+							 {% for value in values %}
+								  <option value="{{ forloop.counter }}">{{ value }}</option>
+							 {% endfor %}
+						</select>
+					</div>
+				{% endfor %}
+
+				<div class="aside_item">
+					 <a href="/list/{{ region_select }}">
+					  <input type="submit" class="btn" value="确 定">
+					 </a>
+				</div>
+			</aside>
+		</form>
+		<div class="myTable" id="list">
+			<table class="tanle table-borsered" id="table_page"
+				data-pagination="true"
+				data-side-pagination="client"
+				data-page-size=10>
+			</table>
+		</div>
+	</main>
+</body>
+<script type="text/javascript">
+	// 点击大屏跳转到大屏页面
+	var screen = document.getElementById('screen')
+	screen.addEventListener('click', () => {
+		location.href = '/'
+	})
+	// 点击山东省房源跳转
+	var province = document.getElementById('province')
+	province.addEventListener('click', () => {
+		location.href = '/shandong'
+	})
+	// 点击城市房源跳转
+	var city = document.getElementById('city')
+	city.addEventListener('click', () => {
+		location.href = '/city/{{ city_pinyin }}'
+	})
+</script>
+<script>
+	house_list_dict={{ house_list_dict }};
+	$(document).ready(function(){
+		$("#table_page").bootstrapTable({
+			columns:[{
+				 field:'mingcheng',
+				 title:'小区名称'
+			 },
+			 {
+				 field:'suozaiquyu',
+				 title:'所在区域'
+			 },
+			 {
+				 field:'jiegou',
+				 title:'户型结构'
+			 },
+			 {
+				 field:'zhuangxiu',
+				 title:'装修情况'
+			 },
+			 {
+				 field:'huxing',
+				 title:'房屋户型'
+			 },
+			 {
+				 field:'chaoxiang',
+				 title:'房屋朝向'
+			 },
+			 {
+				 field:'louceng',
+				 title:'所在楼层'
+			 },
+			  {
+				 field:'chanquan',
+				 title:'产权'
+			 },
+			  {
+				 field:'diya',
+				 title:'抵押'
+			 },
+			 {
+				 field:'mianji',
+				 title:'建筑面积'
+			 },
+			 {
+				 field:'danjia',
+				 title:'房价'
+			 },
+			 {
+				 field:'zongjia',
+				 title:'总价'
+			 },
+			 {
+				 field:'shijian',
+				 title:'挂牌时间'
+			 },
+			 ]
+		 })
+	})
+	var table = document.getElementById("table_page");
+	for (i=0;i<house_list_dict['mingcheng'].length;i++){
+	  var newRow = table.insertRow();
+	  var newCell1 = newRow.insertCell();
+	  newCell1.innerHTML = "<td><a href='/detail?detail="+house_list_dict.lianjie[i]+"'>"+house_list_dict['mingcheng'][i]+"</a></td>" ;
+	  var newCell2 = newRow.insertCell();
+	  newCell2.innerHTML = "<td><a href='/detail?detail="+house_list_dict.lianjie[i]+"'>"+house_list_dict['suozaiquyu'][i]+"</a></td>" ;
+	  var newCell3 = newRow.insertCell();
+	  newCell3.innerHTML = "<td><a href='/detail?detail="+house_list_dict.lianjie[i]+"'>"+house_list_dict['jiegou'][i]+"</a></td>" ;
+	  var newCell4 = newRow.insertCell();
+	  newCell4.innerHTML = "<td><a href='/detail?detail="+house_list_dict.lianjie[i]+"'>"+house_list_dict['zhuangxiu'][i]+"</a></td>" ;
+	  var newCell5 = newRow.insertCell();
+	  newCell5.innerHTML = "<td><a href='/detail?detail="+house_list_dict.lianjie[i]+"'>"+house_list_dict['huxing'][i]+"</a></td>" ;
+	  var newCell6 = newRow.insertCell();
+	  newCell6.innerHTML = "<td><a href='/detail?detail="+house_list_dict.lianjie[i]+"'>"+house_list_dict['chaoxiang'][i]+"</a></td>" ;
+	  var newCell7 = newRow.insertCell();
+	  newCell7.innerHTML = "<td><a href='/detail?detail="+house_list_dict.lianjie[i]+"'>"+house_list_dict['louceng'][i]+"</a></td>" ;
+	   var newCell8 = newRow.insertCell();
+	  newCell8.innerHTML = "<td><a href='/detail?detail="+house_list_dict.lianjie[i]+"'>"+house_list_dict['chanquan'][i]+"</a></td>" ;
+	  var newCell9 = newRow.insertCell();
+	  newCell9.innerHTML = "<td><a href='/detail?detail="+house_list_dict.lianjie[i]+"'>"+house_list_dict['diya'][i]+"</a></td>" ;
+	  var newCell10 = newRow.insertCell();
+	  newCell10.innerHTML = "<td><a href='/detail?detail="+house_list_dict.lianjie[i]+"'>"+house_list_dict['mianji'][i]+"</a></td>" ;
+	  var newCell11 = newRow.insertCell();
+	  newCell11.innerHTML = "<td><a href='/detail?detail="+house_list_dict.lianjie[i]+"'>"+house_list_dict['danjia'][i]+"</a></td>" ;
+	  var newCell12 = newRow.insertCell();
+	  newCell12.innerHTML = "<td><a href='/detail?detail="+house_list_dict.lianjie[i]+"'>"+house_list_dict['zongjia'][i]+"</a></td>" ;
+	  var newCell13 = newRow.insertCell();
+	  newCell13.innerHTML = "<td><a href='/detail?detail="+house_list_dict.lianjie[i]+"'>"+house_list_dict['shijian'][i]+"</a></td>" ;
+	}
+	for (i=1;i<({{ select_list }}.length+1);i++){
+		select_str="select"+i
+		var t=document.getElementById(select_str);
+		for (var j = 0; j < t.options.length; j++) {
+			select_list_value={{ select_list }}[i-1]
+			if (parseInt(t.options[j].value)==select_list_value) {
+				t.options[j].selected = true;
+			}else{
+				t.options[j].selected = false;
+			};
+		};
+	};
+</script>
+
+</html>

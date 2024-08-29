@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="{% static 'js/echarts.min.js' %}"></script>
+		<script src="{% static 'js/wordcount.min.js' %}"></script>
+	</head>
+	<body>
+		<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+		<div id="main" style="width: 1200px;height:500px;"></div> 
+		<script>
+			var myChart = echarts.init(document.getElementById('main'));
+		     //用来存储数据
+		                var jsonlist = [];
+		                jsonlist.push({
+		                    "name": "癫痫病",
+		                    "value": 1446
+		                }, {
+		                    "name": "白癜风",
+		                    "value": 928
+		                }, {
+		                    "name": "无痛**",
+		                    "value": 906
+		                }, {
+		                    "name": "早泄",
+		                    "value": 825
+		                }, {
+		                    "name": "不孕不育",
+		                    "value": 514
+		                }, {
+		                    "name": "尖锐湿疣",
+		                    "value": 486
+		                }, {
+		                    "name": "肿瘤",
+		                    "value": 5999
+		                }, {
+		                    "name": "植发",
+		                    "value": 489
+		                }, {
+		                    "name": "乙肝",
+		                    "value": 468
+		                }, {
+		                    "name": "偏头痛",
+		                    "value": 654
+		                }, {
+		                    "name": "烟雾病",
+		                    "value": 654
+		                }, {
+		                    "name": "支气管炎",
+		                    "value": 732
+		                }, {
+		                    "name": "风湿病",
+		                    "value": 1437
+		                }, {
+		                    "name": "骨科",
+		                    "value": 422
+		                }, {
+		                    "name": "小儿脑瘫",
+		                    "value": 981
+		                }, {
+		                    "name": "糖尿病",
+		                    "value": 331
+		                }, {
+		                    "name": "血管瘤",
+		                    "value": 313
+		                }, {
+		                    "name": "股骨头坏死",
+		                    "value": 307
+		                }, {
+		                    "name": "中耳炎",
+		                    "value": 654
+		                }, {
+		                    "name": "高血压",
+		                    "value": 621
+		                }, {
+		                    "name": "艾滋病",
+		                    "value": 438
+		                }, {
+		                    "name": "手足口病",
+		                    "value": 957
+		                }, {
+		                    "name": "前列腺炎",
+		                    "value": 927
+		                }, {
+		                    "name": "宫颈糜烂",
+		                    "value": 908
+		                }, {
+		                    "name": "肺结核",
+		                    "value": 693
+		                }, {
+		                    "name": "宫颈癌",
+		                    "value": 611
+		                }, {
+		                    "name": "肾虚",
+		                    "value": 512
+		                }, {
+		                    "name": "痔疮",
+		                    "value": 382
+		                }, {
+		                    "name": "宫外孕",
+		                    "value": 312
+		                }, {
+		                    "name": "荨麻疹",
+		                    "value": 600
+		                }, {
+		                    "name": "胃癌",
+		                    "value": 654
+		                }, {
+		                    "name": "湿疹",
+		                    "value": 621
+		                }, {
+		                    "name": "劲椎病",
+		                    "value": 321
+		                }, {
+		                    "name": "霉菌性阴道炎",
+		                    "value": 1331
+		                }, {
+		                    "name": "早泄",
+		                    "value": 941
+		                }, {
+		                    "name": "子宫肌瘤",
+		                    "value": 585
+		                }, {
+		                    "name": "梅毒",
+		                    "value": 473
+		                }, {
+		                    "name": "口臭",
+		                    "value": 358
+		                }, {
+		                    "name": "白血病",
+		                    "value": 246
+		                }, {
+		                    "name": "腰椎间盘突出",
+		                    "value": 207
+		                });
+		                var option = {
+		                    title: {
+		                        text: '高频疾病',
+		                        x: 'center',
+		                    },
+		
+		                    tooltip: {},
+		                    series: [{
+		                        type: 'wordCloud',
+		                        gridSize: 6,//字符间距
+		                        sizeRange: [14, 60],  //字体大小
+		                        shape: 'pentagon', //形状
+		                        width: 800,
+		                        height: 600,
+		                        grid: {
+		                            top: "5px",
+		                            left: "5px",
+		                            right: "5px",
+		                            bottom: "5px",
+		                            backgroundColor: '#fff',
+		                            width: "auto", //图例宽度
+		                            height: "100%", //图例高度
+		                        },
+		
+		                        drawOutOfBound: false,
+		                        textStyle: {
+		
+		                            color: function() {
+		                                return 'rgb(' + [Math.round(Math.random() * 160),
+		                                        Math.round(Math.random() * 160),
+		                                        Math.round(Math.random() * 160)
+		                                    ]
+		                                    .join(',') + ')';
+		                            },
+		                            emphasis: {
+		                                shadowBlur: 10,
+		                                shadowColor: '#333'
+		                            }
+		                        },
+		                        data: jsonlist
+		                    }]
+		                };
+		    myChart.setOption(option);
+		</script>
+	</body>
+</html>

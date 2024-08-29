@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>{{ detail_data.地区 }}{{ detail_data.小区名称 }}房源详情</title>
+	<link rel="stylesheet" href="{% static 'css/myStyle.css' %}" />
+	<script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=RZjvl3UlCI81VcEwej6i7bRdpyigzqTd"></script>
+</head>
+
+<body>
+	<header class="header">
+		<div class="header_left">
+			<img class="img1" alt="" src="{% static 'img/Frame.png' %}">
+		</div>
+		<div class="line"></div>
+		<div class="header_right">
+			<span class="header_title">{{ detail_data.城市 }}{{ detail_data.地区 }} {{ detail_data.小区名称 }}·{{ detail_data.所在区域 }}·{{ detail_data.装修情况 }}</span>
+			<span class="bottomLine"></span>
+		</div>
+	</header>
+	<section class="section">
+		<div class="bread">
+			<span style="color: #1672FD; cursor: pointer;" id="screen">大屏</span>
+			<span style="color: #999999">></span>
+			<span style="color: #1672FD; cursor: pointer;" id="province">山东省</span>
+			<span style="color: #999999">></span>
+			<span style="color: #1672FD; cursor: pointer;" id="city">{{ detail_data.城市 }}</span>
+			<span style="color: #999999">></span>
+			<span style="color: #1672FD; cursor: pointer;" id="area">{{ detail_data.地区 }}</span>
+			<span style="color: #999999">></span>
+			<span>{{ detail_data.小区名称 }}房源详情</span>
+		</div>
+	</section>
+	<main class="main">
+		<aside class="main_aside_new">
+			<div class="main_aside_line">
+				<div class="primaryTitle">
+					<div class="titleLine"></div>
+					<div class="">基本信息</div>
+				</div>
+				<div class="content">
+					<div class="content_layout">
+						<div class="label">房屋户型：</div>
+						<div class="words">{{ detail_data.房屋户型 }}</div>
+					</div>
+					<div class="content_layout">
+						<div class="label">所在楼层：</div>
+						<div class="words">{{ detail_data.所在楼层 }}</div>
+					</div>
+				</div>
+				<div class="content">
+					<div class="content_layout">
+						<div class="label">建筑面积：</div>
+						<div class="words">{{ detail_data.建筑面积 }}</div>
+					</div>
+					<div class="content_layout">
+						<div class="label">户型结构：</div>
+						<div class="words">{{ detail_data.户型结构 }}</div>
+					</div>
+				</div>
+				<div class="content">
+					<div class="content_layout">
+						<div class="label">房屋朝向：</div>
+						<div class="words">{{ detail_data.房屋朝向 }}</div>
+					</div>
+					<div class="content_layout">
+						<div class="label">建筑结构：</div>
+						<div class="words">{{ detail_data.建筑结构 }}</div>
+					</div>
+				</div>
+				<div class="content">
+					<div class="content_layout">
+						<div class="label">装修情况：</div>
+						<div class="words">{{ detail_data.装修情况 }}</div>
+					</div>
+					<div class="content_layout">
+						<div class="label">楼户比例：</div>
+						<div class="words">{{ detail_data.楼户比例 }}</div>
+					</div>
+				</div>
+			</div>
+			<div class="main_aside_line">
+				<div class="primaryTitle">
+					<div class="titleLine"></div>
+					<div class="">交易属性</div>
+				</div>
+				<div class="content">
+					<div class="content_layout">
+						<div class="label">挂牌时间：</div>
+						<div class="words">{{ detail_data.挂牌时间 }}</div>
+					</div>
+					<div class="content_layout">
+						<div class="label">交易权属：</div>
+						<div class="words">{{ detail_data.交易权属 }}</div>
+					</div>
+				</div>
+				<div class="content">
+					<div class="content_layout">
+						<div class="label">产权所属：</div>
+						<div class="words">{{ detail_data.产权所属 }}</div>
+					</div>
+					<div class="content_layout">
+						<div class="label">抵押信息：</div>
+						<div class="words">{{ detail_data.抵押信息 }}</div>
+					</div>
+				</div>
+			</div>
+			<div>
+				<div class="primaryTitle">
+					<div class="titleLine"></div>
+					<div class="">房源特色</div>
+				</div>
+				<div class="bottomContent">
+					<div class="label">核心卖点：</div>
+					<div class="longWords">{{ detail_data.核心卖点 }}</div>
+				</div>
+				<div class="bottomContent">
+					<div class="label">小区介绍：</div>
+					<div class="longWords">{{ detail_data.小区介绍 }}</div>
+				</div>
+				<div class="bottomContent">
+					<div class="label">户型介绍：</div>
+					<div class="longWords">{{ detail_data.户型介绍 }}</div>
+				</div>
+				<div class="bottomContent">
+					<div class="label">交通出行：</div>
+					<div class="longWords">{{ detail_data.交通出行 }}</div>
+				</div>
+			</div>
+		</aside>
+		<div class="mapDetail" id='house_position'></div>
+	</main>
+</body>
+
+</html>
+<script type='text/javascript'>
+	// 点击大屏跳转到大屏页面
+	var screen = document.getElementById('screen')
+	screen.addEventListener('click', () => {
+		location.href = '/'
+	})
+	// 点击山东省房源跳转
+	var province = document.getElementById('province')
+	province.addEventListener('click', () => {
+		location.href = '/shandong'
+	})
+	// 点击山东省房源跳转
+	var city = document.getElementById('city')
+	city.addEventListener('click', () => {
+		location.href = '/city/{{ detail_data.城市拼音 }}'
+	})
+	// 点击区房源跳转
+	var area = document.getElementById('area')
+	area.addEventListener('click', () => {
+		location.href = '/list/{{ up_link }}'
+	})
+</script>
+<script>
+	var map=new BMap.Map("house_position");
+    var point = new BMap.Point({{ detail_data.经度 }},{{ detail_data.纬度 }});
+    map.centerAndZoom(point, 20);
+    map.enableScrollWheelZoom(true);
+    var marker = new BMap.Marker(point);
+	map.addOverlay(marker);
+	var opts = {
+	position : point,    // 指定文本标注所在的地理位置
+	offset   : new BMap.Size(30, -30)}   //设置文本偏移量
+	var label = new BMap.Label("{{ detail_data.小区名称 }}",opts);        // 创建文本标注
+	label.setStyle({
+		color : "blue",
+		fontSize : "25px",
+		height : "25px",
+		lineHeight : "25px"
+	   });
+	map.addOverlay(label);                     // 将文本标注添加到地图中
+</script>
