@@ -17,14 +17,29 @@ def get_region_data(house_data, city_get):
         house_data_region = house_data_temp[house_data_temp['地区'] == region]
         region_data_dict = {'region': region, 'list_link': city_get + '/' + house_data_region['地区拼音'].values[0]}
         region_get_data.append(region_data_dict)
+        # print("region:", region)
+        # print("lon_lat_data_city:\n", lon_lat_data_city)
         lon_lat_data_region = lon_lat_data_city[lon_lat_data_city['地区'] == region]
-        region_adjust = lon_lat_data_region['地图中的地区'].values[0]
+        # region_adjust = lon_lat_data_region['地图中的地区'].values[0]
+        if not lon_lat_data_region.empty:
+            region_adjust = lon_lat_data_region['地图中的地区'].values[0]
+        else:
+            print(f"No data found for region: {region}")
+            # Handle the empty case appropriately
+
         count_region_dict = {'name': region_adjust, 'value': len(house_data_region)}
         price_region_dict = {'name': region_adjust, 'value': round(house_data_region['房价'].mean())}
         count_region.append(count_region_dict)
         price_region.append(price_region_dict)
-        geoCoordMap_region[region_adjust] = [lon_lat_data_region['经度'].values[0],
-                                             lon_lat_data_region['纬度'].values[0]]
+        if not lon_lat_data_region.empty:
+            geoCoordMap_region[region_adjust] = [lon_lat_data_region['经度'].values[0],
+                                                 lon_lat_data_region['纬度'].values[0]]
+        else:
+            print(f"No data found for region: {region_adjust}")
+            # Handle the case where data is missing, e.g., log an error, skip the region, etc.
+
+        # geoCoordMap_region[region_adjust] = [lon_lat_data_region['经度'].values[0],
+        #                                      lon_lat_data_region['纬度'].values[0]]
         region_info[region_adjust] = house_data_region['地区拼音'].values[0]
 
     data = {
