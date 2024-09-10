@@ -3,7 +3,7 @@
 
 
 ## 运行环境
-mysql 随便
+mysql 8.0
 
 python 3.10
 
