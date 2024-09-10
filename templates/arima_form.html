@@ -8,10 +8,20 @@
 </head>
 <body>
     <h1>输入文件路径和预测步数</h1>
-    <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
 
-            {{ form.as_p }}
+    {% if form.errors %}
+        <div style="color: red;">
+            <ul>
+                {% for field, errors in form.errors.items %}
+                    <li>{{ field }}: {{ errors|striptags }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
         <button type="submit">上传并预测</button>
     </form>
 </body>

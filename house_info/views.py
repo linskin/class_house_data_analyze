@@ -3,7 +3,8 @@ from django import forms
 from django.shortcuts import render
 from django.utils.safestring import mark_safe
 from pmdarima import auto_arima  # 导入自动ARIMA选择方法
-
+from django.shortcuts import render
+from .forms import ARIMAForm
 from data_processing.city_show_data import get_city_data
 from data_processing.get_data import get_sql_data
 from data_processing.index_data import get_index_data
@@ -94,10 +95,10 @@ def detail_show(request):
                    'up_link': up_link,
                    })
 
-
-class UploadFileForm(forms.Form):
-    file = forms.FileField(label="选择CSV文件")
-    steps = forms.IntegerField(label="预测的时间点数")
+#
+# class UploadFileForm(forms.Form):
+#     file = forms.FileField(label="选择CSV文件")
+#     steps = forms.IntegerField(label="预测的时间点数")
 
 
 def plot_arima_forecast(request):
@@ -105,7 +106,7 @@ def plot_arima_forecast(request):
     处理用户上传的文件，使用自动选择的ARIMA模型对时间序列数据进行拟合和预测，并将数据传递给前端进行可视化。
     """
     if request.method == 'POST':
-        form = UploadFileForm(request.POST, request.FILES)
+        form = ARIMAForm(request.POST, request.FILES)
         if form.is_valid():
             # 获取上传的文件和预测步数
             uploaded_file = request.FILES['file']
@@ -151,6 +152,6 @@ def plot_arima_forecast(request):
                 # 处理其他异常并将其传递到前端
                 return render(request, 'error.html', {'message': f'发生错误: {str(e)}'})
     else:
-        form = UploadFileForm()
+        form = ARIMAForm()
 
     return render(request, 'arima_form.html', {'form': form})
