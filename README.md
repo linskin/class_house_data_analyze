@@ -1,5 +1,6 @@
 ## 房价预测
-瞎搞的
+![image](https://github.com/user-attachments/assets/1df3f002-a2e8-4583-a695-b7f9341c25af)
+
 
 ## 运行环境
 mysql 随便
