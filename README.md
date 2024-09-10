@@ -16,6 +16,7 @@ python 3.10
 创建sql架构
 
 ![image](https://github.com/user-attachments/assets/b344249f-ef58-4a20-b6dc-fa66dfed6c27)
+
 运行生成的sql文件即可
 **数据库配置**
 
