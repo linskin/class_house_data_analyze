@@ -1,0 +1,18 @@
+<!-- templates/arima_form.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARIMA 预测输入</title>
+</head>
+<body>
+    <h1>输入文件路径和预测步数</h1>
+    <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+        <button type="submit">上传并预测</button>
+    </form>
+</body>
+</html>

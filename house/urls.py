@@ -28,4 +28,11 @@ urlpatterns = [
     path('list/<path:region_select>/', views.region_list),
     path('table_demo/', views.table_demo),
     path('detail/', views.detail_show),
+    path('arima_forecast/', views.plot_arima_forecast, name='plot_arima_forecast'),
+
 ]
+# urls.py
+# from django.urls import path
+# from .views import arima_forecast_view
+
+
