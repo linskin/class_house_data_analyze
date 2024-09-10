@@ -42,13 +42,13 @@ def generate_random_house_data(region):
     core_points = ["位置优越，生活便利", "环境好，适合居住", "周边设施齐全，交通便捷", "社区安静宜居，绿化充足",
                    "交通便利", ]
     floors = ["低层", "中层", "高层"]
-    elevator_occupancy_ratio = ["1梯2户", "2梯4户"]
+    elevator_occupancy_ratio = ["1梯2户", "2梯4户", "3梯7户"]
     transaction_rights_types = ["商品房", "非商品房", "经济适用房"]
     property_rights_types = ["个人产权", "企业产权", "国家产权"]
     mortgage_info_types = ["无抵押", "有抵押"]
-    house_structure_types = ["平层", "错层", "复式", "别墅"]
-    community_name_types = ["名优住宅", "小区", "公寓", "华庭"]
-    area_name_types = ["街道", "社区", "商业区", "商业街", "新区", "开发区"]
+    house_structure_types = ["平层", "错层", "复式", "别墅", "跃层"]
+    community_name_types = ["名优住宅", "小区", "公寓", "华庭", "华府", "庄园"]
+    area_name_types = ["街道", "社区", "商业区", "商业街", "新区", "开发区", "商业中心", "经济开发区"]
 
     house = {
         "city": region["city"],
@@ -65,11 +65,11 @@ def generate_random_house_data(region):
         "decoration_condition": random.choice(decorations),
         "ladder_ratio": random.choice(elevator_occupancy_ratio),
         # "listing_date": str(datetime.date(2024, random.randint(1, 12), random.randint(1, 28))),
-        "listing_date": str(datetime.date(random.randint(2019, 2024), random.randint(1, 12), random.randint(1, 28))),
+        "listing_date": str(datetime.date(random.randint(2015, 2024), random.randint(1, 12), random.randint(1, 28))),
         "transaction_rights": random.choice(transaction_rights_types),
         "property_rights": random.choice(property_rights_types),
         "mortgage_info": random.choice(mortgage_info_types),
-        "price": random.randint(7000, 25000),
+        "price": random.randint(8000, 25000),
         "longitude": region["longitude"],
         "latitude": region["latitude"],
         "core_points": random.choice(core_points),
@@ -83,8 +83,13 @@ def generate_random_house_data(region):
 
 # Generate SQL for each region
 for region in regions:
-    for _ in range(2):  # Generate at least two entries per region
-        house = generate_random_house_data(region)
+    for _ in range(5):  # Generate at least five entries per region
+        try:
+            house = generate_random_house_data(region)
+        except Exception as e:
+            print(e)
+            print(f'sql of {region} generated failed !')
+            continue
         sql = f"""INSERT INTO house_info 
         (城市, 地区, 链接, 小区名称, 所在区域, 房屋户型, 所在楼层, 建筑面积, 户型结构, 房屋朝向, 建筑结构, 装修情况, 梯户比例, 挂牌时间, 
         交易权属, 产权所属, 抵押信息, 房价, 经度, 纬度, 核心卖点, 小区介绍, 户型介绍, 交通出行)
@@ -96,6 +101,7 @@ for region in regions:
         '{house["price"]}', '{house["longitude"]}', '{house["latitude"]}', '{house["core_points"]}', 
         '{house["community_info"]}', '{house["house_intro"]}', '{house["traffic_info"]}');
         """
-        print(sql)
+        print(f'sql of {region} generated success !')
+        # print(len(sql) != '')
         with open("../static/data/sql_data.sql", "a", encoding='utf-8') as f:
             f.write(sql + "\n")
