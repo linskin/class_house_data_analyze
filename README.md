@@ -9,6 +9,9 @@
 
 ![ARIMA预测分析功能预测结果展示页面](https://github.com/user-attachments/assets/c871245a-378c-46a1-8a2b-7936255f891a)
 
+![ARIMA预测分析结果导出并发送至邮箱（邮箱验证）](https://github.com/user-attachments/assets/df540e81-10f5-4f8c-bd05-7d3b960daca6)
+
+
 
 
 ## 运行环境
