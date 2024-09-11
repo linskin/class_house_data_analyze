@@ -7,7 +7,11 @@
 ![image](https://github.com/user-attachments/assets/8364ee04-ba77-4b14-8cf5-64558d3e3f7f)
 
 
-![image](https://github.com/user-attachments/assets/6b0dcd85-8b38-4819-8992-fabc8347699e)
+![ARIMA预测分析功能预测结果展示页面](https://github.com/user-attachments/assets/b4d1db2d-fdee-4536-b1cd-fff393b2d756)
+
+![ARIMA预测分析结果导出并发送至邮箱（图表文件发送） (2)](https://github.com/user-attachments/assets/f4aab969-4ffd-4819-8258-3fb88519a646)
+
+注：图表邮件发送使用的是gmail的smtp，使用时注意网络代理
 
 
 ## 运行环境
