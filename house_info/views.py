@@ -95,12 +95,6 @@ def detail_show(request):
                    'up_link': up_link,
                    })
 
-#
-# class UploadFileForm(forms.Form):
-#     file = forms.FileField(label="选择CSV文件")
-#     steps = forms.IntegerField(label="预测的时间点数")
-
-
 def plot_arima_forecast(request):
     """
     处理用户上传的文件，使用自动选择的ARIMA模型对时间序列数据进行拟合和预测，并将数据传递给前端进行可视化。
@@ -115,6 +109,12 @@ def plot_arima_forecast(request):
             try:
                 # 读取数据
                 data = pd.read_csv(uploaded_file, index_col='日期', parse_dates=True)
+
+                # 只取‘房屋单价’
+                data = data[['房屋单价']]
+
+                # data = data['房屋单价']
+
                 data.columns = ['数值']
 
                 # 设置索引频率为月初（MS）
@@ -148,9 +148,10 @@ def plot_arima_forecast(request):
 
                 return render(request, 'arima_forecast.html', context)
 
-            except Exception as e:
+            except Exception:
                 # 处理其他异常并将其传递到前端
-                return render(request, 'error.html', {'message': f'发生错误: {str(e)}'})
+                return render(request, 'arima_form.html', {'form': form,
+                                                           'message': ['发生错误：文件不符合标准格式','标准格式：表数据须含有‘日期’和‘房屋单价‘两列','文件大小不超过5MB']})
     else:
         form = ARIMAForm()
 

@@ -1,28 +1,203 @@
-<!-- templates/arima_form.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ARIMA 预测输入</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;  /* 使用更现代的字体 */
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;  /* 用于定位回首页按钮 */
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            font-weight: 600;  /* 加强标题字体的厚度 */
+            margin-bottom: 25px;  /* 调整标题和表单之间的间距 */
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 40px;  /* 增加容器内边距 */
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);  /* 更明显的阴影效果 */
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .form-container form {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        form input[type="file"],
+        form input[type="number"],
+        form button {
+            padding: 15px;  /* 增加输入框的高度 */
+            border-radius: 8px;  /* 使用更大的圆角 */
+            border: 1px solid #ccc;
+            margin-bottom: 20px;  /* 增加输入框和按钮之间的间距 */
+            font-size: 16px;
+            width: 100%;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;  /* 增加输入框交互效果 */
+        }
+
+        form input[type="file"]:focus,
+        form input[type="number"]:focus {
+            border-color: #007BFF;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);  /* 增加输入框聚焦时的阴影效果 */
+            outline: none;
+        }
+
+        form button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        form button i {
+            margin-right: 8px;
+        }
+
+        form button:hover {
+            background-color: #0056b3;
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);  /* 增加按钮悬停时的阴影效果 */
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 15px;
+            text-align: left;
+            width: 100%;
+            display: none;  /* 默认隐藏错误信息 */
+        }
+
+        .loading-message {
+            color: #007BFF;
+            font-size: 20px;
+            margin-bottom: 15px;
+            display: none;
+            text-align: center;
+        }
+
+        /* 回首页按钮 */
+        .home-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #28a745;  /* 使用绿色作为回首页按钮的背景色 */
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .home-btn i {
+            margin-right: 8px;
+        }
+
+        .home-btn:hover {
+            background-color: #218838;
+            box-shadow: 0 4px 8px rgba(40, 167, 69, 0.2);  /* 增加按钮悬停时的阴影效果 */
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 20px;
+            }
+        }
+    </style>
+
+    <!-- 引入 Font Awesome 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <script>
+        function handleSubmit() {
+            // 禁用按钮
+            const submitButton = document.querySelector('form button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.textContent = '处理中...';
+
+            // 显示加载消息
+            const loadingMessage = document.querySelector('.loading-message');
+            loadingMessage.style.display = 'block';
+
+            // 隐藏错误信息
+            const errorMessage = document.querySelector('.error-message');
+            if (errorMessage) {
+                errorMessage.style.display = 'none';
+            }
+
+            document.getElementById("arimaForm").reset();
+        }
+
+        function goHome() {
+            window.location.href = '/';  // 假设首页路径为 '/'
+        }
+    </script>
 </head>
 <body>
-    <h1>输入文件路径和预测步数</h1>
 
-    {% if form.errors %}
-        <div style="color: red;">
-            <ul>
-                {% for field, errors in form.errors.items %}
-                    <li>{{ field }}: {{ errors|striptags }}</li>
-                {% endfor %}
-            </ul>
+    <!-- 回首页按钮 -->
+    <button class="home-btn" onclick="goHome()">
+        <i class="fas fa-home"></i>回首页
+    </button>
+
+    <div class="form-container">
+        <h1>输入文件路径和预测步数</h1>
+
+        <!-- 显示错误消息 -->
+        {% if message %}
+            <div class="error-message" style="display: block;">
+                <ul>
+                    {% for mes in message %}
+                        <li>{{ mes }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        <!-- 显示处理中的提示 -->
+        <div class="loading-message">
+            正在处理，请稍候...
         </div>
-    {% endif %}
 
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">上传并预测</button>
-    </form>
+        <form method="POST" enctype="multipart/form-data" onsubmit="handleSubmit()">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">
+                <i class="fas fa-upload"></i>上传并预测
+            </button>
+        </form>
+    </div>
+
 </body>
 </html>

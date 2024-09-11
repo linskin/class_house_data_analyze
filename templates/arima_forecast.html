@@ -1,4 +1,3 @@
-<!-- templates/arima_forecast.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,9 +6,92 @@
     <title>ARIMA 预测</title>
     <!-- 引入 ECharts -->
     <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome 用于图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            position: relative;  /* 用于定位回首页按钮 */
+        }
+
+        h1 {
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        #chart {
+            width: 80%;
+            height: 60%;
+            margin-bottom: 20px;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .export-btn, .home-btn {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .export-btn i, .home-btn i {
+            margin-right: 8px;
+        }
+
+        .export-btn:hover {
+            background-color: #0056b3;
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+        }
+
+        /* 回首页按钮定位和样式 */
+        .home-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #28a745;  /* 使用不同颜色 */
+        }
+
+        .home-btn:hover {
+            background-color: #218838;
+            box-shadow: 0 4px 8px rgba(40, 167, 69, 0.2);
+        }
+    </style>
 </head>
 <body>
-    <div id="chart" style="width: 100%; height: 600px;"></div>
+     <!-- 图表容器 -->
+    <div id="chart"></div>
+
+    <!-- 导出按钮 -->
+    <div class="button-container">
+        <button class="export-btn" onclick="exportChart()">
+            <i class="fas fa-download"></i>导出图表
+        </button>
+    </div>
+
+    <!-- 回首页按钮 -->
+    <button class="home-btn" onclick="goHome()">
+        <i class="fas fa-home"></i>回首页
+    </button>
 
     <script>
         // 从 Django 后端获取数据
@@ -28,8 +110,9 @@
         // 配置 ECharts 图表
         var option = {
             title: {
-                text: 'ARIMA 模型拟合及预测',
-                left: 'center'
+                text: 'ARIMA模型拟合及预测结果',
+                left: 'center',
+                subtext: '数据来源：中国房价数据',
             },
             tooltip: {
                 trigger: 'axis'
@@ -60,7 +143,7 @@
                 {
                     name: '预测值',
                     type: 'line',
-                    data: new Array(dates.length).fill(null).concat(forecast_values),  // 前面的部分填充为空
+                    data: new Array(dates.length).fill(null).concat(forecast_values),
                     lineStyle: {
                         type: 'dashed'
                     }
@@ -70,6 +153,23 @@
 
         // 绘制图表
         chart.setOption(option);
+
+        // 导出图表功能
+        function exportChart() {
+            var link = document.createElement('a');
+            link.href = chart.getDataURL({
+                type: 'png',  // 可选类型: 'png', 'jpeg'
+                pixelRatio: 2,  // 增加分辨率
+                backgroundColor: '#fff'
+            });
+            link.download = 'arima_forecast_chart.png';
+            link.click();
+        }
+
+        // 回首页功能
+        function goHome() {
+            window.location.href = '/';  // 假设首页路径为 '/'
+        }
     </script>
 </body>
 </html>

@@ -8,6 +8,26 @@
 	<link rel="stylesheet" href="{% static 'css/myStyle.css' %}" />
 	<script src="{% static 'js/echarts.min.js' %}"></script>
 	<script src="{% static 'js/shandong.js' %}"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .arima-button {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .arima-button i {
+            margin-right: 5px;
+        }
+
+        .arima-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 
 <body>
@@ -20,6 +40,20 @@
 			<span class="header_title">山东省各城市房源信息</span>
 			<span class="bottomLine"></span>
 		</div>
+
+		<div class="line"></div>
+		<div class="header_left" >
+			<span class="header_title">
+				<a href="/arima_forecast/">
+        			<button type="button" class="arima-button">
+            			<i class="fas fa-chart-line"></i>
+            				ARIMA 预测
+        			</button>
+    			</a>
+			</span>
+
+		</div>
+
 	</header>
 	<section class="section">
 		<div class="bread">
