@@ -1,0 +1,78 @@
+<!-- templates/verify_email.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h2>Email Verification</h2>
+
+    <!-- 发送验证码表单 -->
+    <form id="send-code-form">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <button type="submit">Send Verification Code</button>
+        <p id="send-code-message"></p>
+    </form>
+
+    <hr>
+
+    <!-- 验证验证码表单 -->
+    <form id="verify-code-form">
+        <label for="code">Verification Code:</label>
+        <input type="text" id="code" name="code" required>
+        <button type="submit">Verify Code</button>
+        <p id="verify-code-message"></p>
+    </form>
+
+    <script>
+        // 发送验证码 AJAX 请求
+        $('#send-code-form').on('submit', function(e) {
+            e.preventDefault();
+            var email = $('#email').val();
+
+            $.ajax({
+                url: "/send_verification_email/",
+                method: "POST",
+                data: {
+                    email: email,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    $('#send-code-message').text(response.message);
+                },
+                error: function(response) {
+                    $('#send-code-message').text(response.responseJSON.error);
+                }
+            });
+        });
+
+        // 验证验证码 AJAX 请求
+        $('#verify-code-form').on('submit', function(e) {
+            e.preventDefault();
+            var email = $('#email').val();
+            var code = $('#code').val();
+
+            $.ajax({
+                url: "/verify_code/",
+                method: "POST",
+                data: {
+                    email: email,
+                    code: code,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    $('#verify-code-message').text(response.message);
+                },
+                error: function(response) {
+                    $('#verify-code-message').text(response.responseJSON.error);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -15,6 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.shortcuts import render
 from django.urls import path
 from house_info import views
 
@@ -29,6 +30,9 @@ urlpatterns = [
     path('table_demo/', views.table_demo),
     path('detail/', views.detail_show),
     path('arima_forecast/', views.plot_arima_forecast, name='plot_arima_forecast'),
+    path('send-verification-email/', views.send_verification_email, name='send_verification_email'),
+    path('verify-code/', views.verify_code, name='verify_code'),
+    path('verify-email/', lambda request: render(request, 'verify_email.html'), name='verify_email'),  # 新增这个路由指向页面
 
 ]
 # urls.py

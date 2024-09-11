@@ -1,3 +1,5 @@
+import datetime
+
 import pandas as pd
 from django import forms
 from django.shortcuts import render
@@ -156,3 +158,65 @@ def plot_arima_forecast(request):
         form = ARIMAForm()
 
     return render(request, 'arima_form.html', {'form': form})
+
+
+# views.py
+
+from django.http import JsonResponse
+from .models import EmailVerificationCode
+import random
+from django.core.mail import send_mail
+from django.utils import timezone
+
+
+
+def generate_verification_code():
+    return str(random.randint(100000, 999999))
+
+
+# 发送验证码
+def send_verification_email(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        code = generate_verification_code()
+
+        # 使用 update_or_create 创建或更新 email 记录
+        obj, created = EmailVerificationCode.objects.update_or_create(
+            email=email,
+            defaults={'code': code}  # 在这里不包括 created_at
+        )
+
+        # 如果记录是新创建的，则更新 created_at 字段
+        if created or obj.is_expired():
+            obj.code = code
+            obj.created_at = timezone.now()
+            obj.save()
+
+            # 发送邮件
+            send_mail(
+                subject='Your verification code',
+                message=f'Your verification code is {code}',
+                from_email='your_email@gmail.com',
+                recipient_list=[email],
+            )
+
+            return JsonResponse({'message': '验证码发送成功!'}, status=200)
+        # 如果验证码未过期
+        return JsonResponse({'message': '验证码未过期，无需再次发送!'}, status=200)
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+# 验证验证码
+def verify_code(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        code = request.POST.get('code')
+        try:
+            verification = EmailVerificationCode.objects.get(email=email)
+            if verification.code == code and not verification.is_expired():
+                return JsonResponse({'message': '验证成功！'}, status=200)
+            else:
+                return JsonResponse({'error': '验证码错误或已过期！'}, status=400)
+        except EmailVerificationCode.DoesNotExist:
+            return JsonResponse({'error': 'Email not found.'}, status=404)
+    return JsonResponse({'error': 'Invalid request'}, status=400)
