@@ -301,33 +301,60 @@
             }
         });
     });
-
-    // 从 Django 后端获取数据并渲染图表
-    var dates = {{ dates | safe }};
-    var actual_values = {{ actual_values | safe }};
-    var fitted_values = {{ fitted_values | safe }};
-    var forecast_dates = {{ forecast_dates | safe }};
-    var forecast_values = {{ forecast_values | safe }};
+    // 从 Django 后端获取数据
+    var dates = {{ dates|safe }};
+    var actual_values = {{ actual_values|safe }};
+    var fitted_values = {{ fitted_values|safe }};
+    var forecast_dates = {{ forecast_dates|safe }};
+    var forecast_values = {{ forecast_values|safe }};
+    // 合并所有日期用于 x 轴
     var all_dates = dates.concat(forecast_dates);
-
+    // 初始化 ECharts
     var chart = echarts.init(document.getElementById('chart'));
+    // 配置 ECharts 图表
     var option = {
         title: {
-            text: 'ARIMA模型拟合及预测结果',
-            left: 'center',
-            subtext: '数据来源：中国房价数据',
+            text: 'ARIMA 模型拟合及预测',
+            left: 'center'
         },
-        tooltip: { trigger: 'axis' },
-        legend: { data: ['实际值', '拟合值', '预测值'], top: '10%' },
-        xAxis: { type: 'category', data: all_dates },
-        yAxis: { type: 'value', name: '平均房屋单价' },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data: ['实际值', '拟合值', '预测值'],
+            top: '10%'
+        },
+        xAxis: {
+            type: 'category',
+            data: all_dates
+        },
+        yAxis: {
+            type: 'value',
+            name: '平均房屋单价'
+        },
         series: [
-            { name: '实际值', type: 'line', data: actual_values },
-            { name: '拟合值', type: 'line', data: fitted_values },
-            { name: '预测值', type: 'line', data: forecast_values }
+            {
+                name: '实际值',
+                type: 'line',
+                data: actual_values
+            },
+            {
+                name: '拟合值',
+                type: 'line',
+                data: fitted_values
+            },
+            {
+                name: '预测值',
+                type: 'line',
+                data: new Array(dates.length).fill(null).concat(forecast_values),  // 前面的部分填充为空
+                lineStyle: {
+                    type: 'dashed'
+                }
+            }
         ]
     };
 
+    // 绘制图表
     chart.setOption(option);
 
     // 回首页按钮的功能
