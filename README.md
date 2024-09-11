@@ -7,7 +7,8 @@
 ![image](https://github.com/user-attachments/assets/8364ee04-ba77-4b14-8cf5-64558d3e3f7f)
 
 
-![image](https://github.com/user-attachments/assets/6b0dcd85-8b38-4819-8992-fabc8347699e)
+![ARIMA预测分析功能预测结果展示页面](https://github.com/user-attachments/assets/c871245a-378c-46a1-8a2b-7936255f891a)
+
 
 
 ## 运行环境
