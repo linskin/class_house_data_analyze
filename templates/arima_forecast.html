@@ -43,7 +43,9 @@
             gap: 10px;
         }
 
-        .export-btn, .home-btn {
+        .button {
+            display: flex;
+            align-items: center;
             background-color: #007BFF;
             color: white;
             padding: 10px 20px;
@@ -52,17 +54,31 @@
             cursor: pointer;
             font-weight: 500;
             transition: background-color 0.3s ease, box-shadow 0.3s ease;
-            display: flex;
-            align-items: center;
         }
 
-        .export-btn i, .home-btn i {
+        .button i {
             margin-right: 8px;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+        }
+
+        .export-btn {
+            background-color: #007BFF;
         }
 
         .export-btn:hover {
             background-color: #0056b3;
-            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+        }
+
+        .email-btn {
+            background-color: #17a2b8;
+        }
+
+        .email-btn:hover {
+            background-color: #138496;
         }
 
         .home-btn {
@@ -150,21 +166,18 @@
 <!-- 图表容器 -->
 <div id="chart"></div>
 
-<!-- 导出按钮 -->
-<!-- 导出按钮 -->
+<!-- 导出图表按钮 -->
 <div class="button-container">
-    <button class="export-btn" onclick="exportChart()">
+    <button class="button export-btn" onclick="exportChart()">
         <i class="fas fa-download"></i>导出图表
     </button>
-</div>
-<div class="button-container">
-    <button class="export-btn" onclick="showPopup()">
+    <button class="button email-btn" onclick="showPopup()">
         <i class="fas fa-envelope"></i>发送图表至邮箱
     </button>
 </div>
 
 <!-- 回首页按钮 -->
-<button class="home-btn" onclick="goHome()">
+<button class="button home-btn" onclick="goHome()">
     <i class="fas fa-home"></i>回首页
 </button>
 
@@ -185,7 +198,6 @@
 
 <!-- Overlay -->
 <div class="overlay" id="overlay"></div>
-
 <script>
     // 显示弹窗
     function showPopup() {
