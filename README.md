@@ -4,7 +4,10 @@
 
 ## 房价预测
 
-![image](https://github.com/user-attachments/assets/1df3f002-a2e8-4583-a695-b7f9341c25af)
+![image](https://github.com/user-attachments/assets/8364ee04-ba77-4b14-8cf5-64558d3e3f7f)
+
+
+![image](https://github.com/user-attachments/assets/6b0dcd85-8b38-4819-8992-fabc8347699e)
 
 
 ## 运行环境
