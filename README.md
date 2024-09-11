@@ -9,6 +9,12 @@
 
 ## 运行环境
 
+pmdarima django pymysql pandas
+
+numpy 1.26.4
+
+echarts
+
 mysql 8.0
 
 python 3.10
