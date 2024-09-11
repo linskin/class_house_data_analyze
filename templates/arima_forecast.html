@@ -106,9 +106,17 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             z-index: 1000;
+            /*box-sizing: border-box; !* 确保内边距不会导致超出容器 *!*/
         }
 
-        .popup input, .popup button {
+        .popup input{
+            width: 92%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .popup button {
             width: 100%;
             padding: 10px;
             margin-top: 10px;
@@ -183,22 +191,35 @@
 
 <!-- 弹窗 -->
 <div class="popup" id="email-popup">
-    <h2>Email Verification</h2>
+    <!-- 关闭按钮 -->
+    <a onclick="hidePopup()" aria-label="关闭" style="position: absolute; top: 10px; right: 20px; color: #5e5e5e; cursor: pointer;">
+        <i class="fas fa-times"></i>
+    </a>
+    <h3>邮箱验证</h3>
+    <p style="font-size: 14px; color: #5e5e5e">请输入您的邮箱，我们将发送验证码到您的邮箱，验证后，您可以将图表发送至您的邮箱。</p>
     <form id="send-code-form">
-        <input id="email" name="email" placeholder="Enter your email" required type="email">
-        <button type="submit">Send Verification Code</button>
+        <input id="email" name="email" placeholder="请输入您的邮箱" required type="email">
+        <button type="submit">发送验证码</button>
         <p id="send-code-message"></p>
     </form>
     <form id="verify-code-form">
-        <input id="code" name="code" placeholder="Enter the verification code" required type="text">
-        <button type="submit">Verify Code & Send Chart</button>
+        <input id="code" name="code" placeholder="请输入验证码" required type="text">
+        <button type="submit">验证代码并发送图表</button>
         <p id="verify-code-message"></p>
     </form>
 </div>
 
 <!-- Overlay -->
-<div class="overlay" id="overlay"></div>
+<!--<div class="overlay" id="overlay"></div>-->
+<div id="overlay" style="display:none; /* 初始为隐藏 */ position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); /* 示例遮罩层样式 */"></div>
+
 <script>
+    // // 隐藏弹窗
+    // function hidePopup() {
+    //     document.getElementById('email-popup').style.display = 'none';
+    //     document.getElementById('overlay').style.display = 'none';
+    // }
+
     // 显示弹窗
     function showPopup() {
         document.getElementById('email-popup').style.display = 'block';
@@ -238,6 +259,9 @@
         var email = $('#email').val();
         var code = $('#code').val();
 
+        // 发送图表前的提示信息
+        alert('正在发送图表，请稍候...');
+
         $.ajax({
             url: "{% url 'verify_code' %}",
             method: "POST",
@@ -249,7 +273,6 @@
             success: function (response) {
                 $('#verify-code-message').text(response.message);
 
-                // 验证成功后将图表导出为 PNG 并发送到邮箱
                 var chartImage = chart.getDataURL({
                     type: 'png',
                     pixelRatio: 2,
@@ -265,11 +288,11 @@
                         csrfmiddlewaretoken: '{{ csrf_token }}'
                     },
                     success: function (response) {
-                        alert('图表已发送至邮箱');
+                        alert('图表已成功发送至邮箱');
                         hidePopup(); // 发送成功后隐藏弹窗
                     },
                     error: function (response) {
-                        alert('发送图表时出错');
+                        alert('发送图表时出错，请稍后再试');
                     }
                 });
             },

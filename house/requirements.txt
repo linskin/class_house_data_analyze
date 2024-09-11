@@ -1,7 +1,0 @@
-django
-pymysql
-pandas
-numpy 1.26.4
-pmdarima
-<!-- 引入 ECharts -->
-<script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
