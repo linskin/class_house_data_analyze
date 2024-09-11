@@ -213,7 +213,7 @@ def verify_code(request):
             if verification.code == code and not verification.is_expired():
                 # 如果验证成功，则删除该条数据
                 verification.delete()
-                return JsonResponse({'message': '验证成功！'}, status=200)
+                return JsonResponse({'message': '验证成功！正在发送图表至邮箱...'}, status=200)
             else:
                 return JsonResponse({'error': '验证码错误或已过期！'}, status=400)
         except EmailVerificationCode.DoesNotExist:

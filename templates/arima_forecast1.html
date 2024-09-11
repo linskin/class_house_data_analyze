@@ -23,7 +23,7 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
-            position: relative;
+            position: relative; /* 用于定位回首页按钮 */
         }
 
         h1 {
@@ -65,101 +65,28 @@
             box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
         }
 
+        /* 回首页按钮定位和样式 */
         .home-btn {
             position: absolute;
             top: 20px;
             right: 20px;
-            background-color: #28a745;
+            background-color: #28a745; /* 使用不同颜色 */
         }
 
         .home-btn:hover {
             background-color: #218838;
             box-shadow: 0 4px 8px rgba(40, 167, 69, 0.2);
         }
-
-        /* 弹窗样式 */
-        .popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 300px;
-            padding: 20px;
-            background-color: white;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            z-index: 1000;
-        }
-
-        .popup input, .popup button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .popup button {
-            background-color: #007BFF;
-            color: white;
-            cursor: pointer;
-        }
-
-        .popup button:hover {
-            background-color: #0056b3;
-        }
-
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-        }
-
-        /* Logo */
-        .logo {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 24px;
-            font-weight: bold;
-            color: #007BFF;
-            display: flex;
-            align-items: center;
-        }
-
-        .logo img {
-            width: 30px;
-            height: 30px;
-            margin-right: 10px;
-        }
     </style>
 </head>
 <body>
-
-<!-- Logo -->
-<div class="logo">
-    ARIMA 预测
-</div>
-
 <!-- 图表容器 -->
 <div id="chart"></div>
 
 <!-- 导出按钮 -->
-<!-- 导出按钮 -->
 <div class="button-container">
     <button class="export-btn" onclick="exportChart()">
         <i class="fas fa-download"></i>导出图表
-    </button>
-</div>
-<div class="button-container">
-    <button class="export-btn" onclick="showPopup()">
-        <i class="fas fa-envelope"></i>发送图表至邮箱
     </button>
 </div>
 
@@ -168,37 +95,27 @@
     <i class="fas fa-home"></i>回首页
 </button>
 
-<!-- 弹窗 -->
-<div class="popup" id="email-popup">
-    <h2>Email Verification</h2>
-    <form id="send-code-form">
-        <input id="email" name="email" placeholder="Enter your email" required type="email">
-        <button type="submit">Send Verification Code</button>
-        <p id="send-code-message"></p>
-    </form>
-    <form id="verify-code-form">
-        <input id="code" name="code" placeholder="Enter the verification code" required type="text">
-        <button type="submit">Verify Code & Send Chart</button>
-        <p id="verify-code-message"></p>
-    </form>
-</div>
+<h2>Email Verification</h2>
 
-<!-- Overlay -->
-<div class="overlay" id="overlay"></div>
+<!-- 发送验证码表单 -->
+<form id="send-code-form">
+    <label for="email">Email:</label>
+    <input id="email" name="email" required type="email">
+    <button type="submit">Send Verification Code</button>
+    <p id="send-code-message"></p>
+</form>
+
+<hr>
+
+<!-- 验证验证码表单 -->
+<form id="verify-code-form">
+    <label for="code">Verification Code:</label>
+    <input id="code" name="code" required type="text">
+    <button type="submit">Verify Code</button>
+    <p id="verify-code-message"></p>
+</form>
 
 <script>
-    // 显示弹窗
-    function showPopup() {
-        document.getElementById('email-popup').style.display = 'block';
-        document.getElementById('overlay').style.display = 'block';
-    }
-
-    // 隐藏弹窗
-    function hidePopup() {
-        document.getElementById('email-popup').style.display = 'none';
-        document.getElementById('overlay').style.display = 'none';
-    }
-
     // 发送验证码 AJAX 请求
     $('#send-code-form').on('submit', function (e) {
         e.preventDefault();
@@ -220,7 +137,29 @@
         });
     });
 
-    // 验证验证码并发送图表
+    // 验证验证码 AJAX 请求
+    $('#verify-code-form').on('submit', function (e) {
+        e.preventDefault();
+        var email = $('#email').val();
+        var code = $('#code').val();
+
+        $.ajax({
+            url: "{% url 'verify_code' %}",
+            method: "POST",
+            data: {
+                email: email,
+                code: code,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function (response) {
+                $('#verify-code-message').text(response.message);
+            },
+            error: function (response) {
+                $('#verify-code-message').text(response.responseJSON.error);
+            }
+        });
+    });
+    // 验证验证码 AJAX 请求
     $('#verify-code-form').on('submit', function (e) {
         e.preventDefault();
         var email = $('#email').val();
@@ -254,7 +193,6 @@
                     },
                     success: function (response) {
                         alert('图表已发送至邮箱');
-                        hidePopup(); // 发送成功后隐藏弹窗
                     },
                     error: function (response) {
                         alert('发送图表时出错');
@@ -267,38 +205,91 @@
         });
     });
 
-    // 从 Django 后端获取数据并渲染图表
-    var dates = {{ dates | safe }};
-    var actual_values = {{ actual_values | safe }};
-    var fitted_values = {{ fitted_values | safe }};
-    var forecast_dates = {{ forecast_dates | safe }};
-    var forecast_values = {{ forecast_values | safe }};
+
+    // 从 Django 后端获取数据
+    var dates = {
+    {
+        dates | safe
+    }
+    }
+
+    var actual_values = {
+    {
+        actual_values | safe
+    }
+    }
+
+    var fitted_values = {
+    {
+        fitted_values | safe
+    }
+    }
+
+    var forecast_dates = {
+    {
+        forecast_dates | safe
+    }
+    }
+
+    var forecast_values = {
+    {
+        forecast_values | safe
+    }
+    }
+
+
+    // 合并所有日期用于 x 轴
     var all_dates = dates.concat(forecast_dates);
 
+    // 初始化 ECharts
     var chart = echarts.init(document.getElementById('chart'));
+
+    // 配置 ECharts 图表
     var option = {
         title: {
             text: 'ARIMA模型拟合及预测结果',
             left: 'center',
             subtext: '数据来源：中国房价数据',
         },
-        tooltip: { trigger: 'axis' },
-        legend: { data: ['实际值', '拟合值', '预测值'], top: '10%' },
-        xAxis: { type: 'category', data: all_dates },
-        yAxis: { type: 'value', name: '平均房屋单价' },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data: ['实际值', '拟合值', '预测值'],
+            top: '10%'
+        },
+        xAxis: {
+            type: 'category',
+            data: all_dates
+        },
+        yAxis: {
+            type: 'value',
+            name: '平均房屋单价'
+        },
         series: [
-            { name: '实际值', type: 'line', data: actual_values },
-            { name: '拟合值', type: 'line', data: fitted_values },
-            { name: '预测值', type: 'line', data: forecast_values }
+            {
+                name: '实际值',
+                type: 'line',
+                data: actual_values
+            },
+            {
+                name: '拟合值',
+                type: 'line',
+                data: fitted_values
+            },
+            {
+                name: '预测值',
+                type: 'line',
+                data: new Array(dates.length).fill(null).concat(forecast_values),
+                lineStyle: {
+                    type: 'dashed'
+                }
+            }
         ]
     };
 
+    // 绘制图表
     chart.setOption(option);
-
-    // 回首页按钮的功能
-    function goHome() {
-        window.location.href = '/';
-    }
 
     // 导出图表功能
     function exportChart() {
@@ -310,6 +301,11 @@
         });
         link.download = 'arima_forecast_chart.png';
         link.click();
+    }
+
+    // 回首页功能
+    function goHome() {
+        window.location.href = '/';  // 假设首页路径为 '/'
     }
 </script>
 </body>
