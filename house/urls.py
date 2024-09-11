@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.shortcuts import render
 from django.urls import path
+
 from house_info import views
 
 urlpatterns = [
@@ -33,9 +34,5 @@ urlpatterns = [
     path('send-verification-email/', views.send_verification_email, name='send_verification_email'),
     path('verify-code/', views.verify_code, name='verify_code'),
     path('verify-email/', lambda request: render(request, 'verify_email.html'), name='verify_email'),  # 新增这个路由指向页
+    path('send_chart_email/', views.send_chart_email, name='send_chart_email'),
 ]
-# urls.py
-# from django.urls import path
-# from .views import arima_forecast_view
-
-

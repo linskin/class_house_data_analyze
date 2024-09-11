@@ -1,19 +1,24 @@
-import datetime
+import base64
+import random
+from io import BytesIO
 
 import pandas as pd
-from django import forms
+from PIL import Image
+from django.core.mail import EmailMessage
+from django.core.mail import send_mail
+from django.http import JsonResponse
 from django.shortcuts import render
+from django.utils import timezone
 from django.utils.safestring import mark_safe
 from pmdarima import auto_arima  # 导入自动ARIMA选择方法
-from django.shortcuts import render
-from .forms import ARIMAForm
+
 from data_processing.city_show_data import get_city_data
 from data_processing.get_data import get_sql_data
 from data_processing.index_data import get_index_data
 from data_processing.region_show_data import get_region_data
 from data_processing.regionlist_data import get_regionlist_data
-
-# from statsmodels.tsa.arima_model import ARIMA
+from .forms import ARIMAForm
+from .models import EmailVerificationCode
 
 # Create your views here.
 
@@ -97,6 +102,7 @@ def detail_show(request):
                    'up_link': up_link,
                    })
 
+
 def plot_arima_forecast(request):
     """
     处理用户上传的文件，使用自动选择的ARIMA模型对时间序列数据进行拟合和预测，并将数据传递给前端进行可视化。
@@ -153,21 +159,13 @@ def plot_arima_forecast(request):
             except Exception:
                 # 处理其他异常并将其传递到前端
                 return render(request, 'arima_form.html', {'form': form,
-                                                           'message': ['发生错误：文件不符合标准格式','标准格式：表数据须含有‘日期’和‘房屋单价‘两列','文件大小不超过5MB']})
+                                                           'message': ['发生错误：文件不符合标准格式',
+                                                                       '标准格式：表数据须含有‘日期’和‘房屋单价‘两列',
+                                                                       '文件大小不超过5MB']})
     else:
         form = ARIMAForm()
 
     return render(request, 'arima_form.html', {'form': form})
-
-
-# views.py
-
-from django.http import JsonResponse
-from .models import EmailVerificationCode
-import random
-from django.core.mail import send_mail
-from django.utils import timezone
-
 
 
 def generate_verification_code():
@@ -221,3 +219,51 @@ def verify_code(request):
         except EmailVerificationCode.DoesNotExist:
             return JsonResponse({'error': '验证码已失效!'}, status=404)
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+def send_chart_email(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        chart_image = request.POST.get('chart_image')
+
+        if not email or not chart_image:
+            return JsonResponse({'error': '缺少必要参数'}, status=400)
+
+        # 解码 base64 图像数据
+        try:
+            chart_image_data = chart_image.split(',')[1]
+            image_data = base64.b64decode(chart_image_data)
+        except (IndexError, TypeError, ValueError):
+            return JsonResponse({'error': '图像数据无效'}, status=400)
+
+        # 使用 BytesIO 处理图像文件
+        try:
+            image = Image.open(BytesIO(image_data))
+            image_io = BytesIO()
+            image.save(image_io, format='PNG')
+            image_io.seek(0)
+        except Exception as e:
+            return JsonResponse({'error': '图像处理失败'}, status=500)
+
+        # 创建邮件并添加附件
+        try:
+            email_subject = 'ARIMA 图表'
+            email_body = '这是您请求的 ARIMA 预测图表'
+            email_message = EmailMessage(
+                subject=email_subject,
+                body=email_body,
+                from_email='hong1360293790@gmail.com',
+                to=[email]
+            )
+            email_message.attach(
+                'arima_forecast_chart.png',
+                image_io.getvalue(),
+                'image/png'
+            )
+            email_message.send()
+        except Exception as e:
+            return JsonResponse({'error': '发送邮件失败'}, status=500)
+
+        return JsonResponse({'message': '图表已发送至邮箱'}, status=200)
+
+    return JsonResponse({'error': '无效请求'}, status=400)
