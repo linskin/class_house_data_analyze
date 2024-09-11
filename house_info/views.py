@@ -182,8 +182,7 @@ def send_verification_email(request):
 
         # 使用 update_or_create 创建或更新 email 记录
         obj, created = EmailVerificationCode.objects.update_or_create(
-            email=email,
-            defaults={'code': code}  # 在这里不包括 created_at
+            email=email
         )
 
         # 如果记录是新创建的，则更新 created_at 字段
@@ -214,9 +213,11 @@ def verify_code(request):
         try:
             verification = EmailVerificationCode.objects.get(email=email)
             if verification.code == code and not verification.is_expired():
+                # 如果验证成功，则删除该条数据
+                verification.delete()
                 return JsonResponse({'message': '验证成功！'}, status=200)
             else:
                 return JsonResponse({'error': '验证码错误或已过期！'}, status=400)
         except EmailVerificationCode.DoesNotExist:
-            return JsonResponse({'error': 'Email not found.'}, status=404)
+            return JsonResponse({'error': '验证码已失效!'}, status=404)
     return JsonResponse({'error': 'Invalid request'}, status=400)

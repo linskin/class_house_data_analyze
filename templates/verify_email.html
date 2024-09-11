@@ -36,7 +36,7 @@
             var email = $('#email').val();
 
             $.ajax({
-                url: "/send_verification_email/",
+                url: "{% url 'send_verification_email' %}",
                 method: "POST",
                 data: {
                     email: email,
@@ -58,7 +58,7 @@
             var code = $('#code').val();
 
             $.ajax({
-                url: "/verify_code/",
+                url: "{% url 'verify_code' %}",
                 method: "POST",
                 data: {
                     email: email,

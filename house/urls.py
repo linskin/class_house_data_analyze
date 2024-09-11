@@ -32,8 +32,7 @@ urlpatterns = [
     path('arima_forecast/', views.plot_arima_forecast, name='plot_arima_forecast'),
     path('send-verification-email/', views.send_verification_email, name='send_verification_email'),
     path('verify-code/', views.verify_code, name='verify_code'),
-    path('verify-email/', lambda request: render(request, 'verify_email.html'), name='verify_email'),  # 新增这个路由指向页面
-
+    path('verify-email/', lambda request: render(request, 'verify_email.html'), name='verify_email'),  # 新增这个路由指向页
 ]
 # urls.py
 # from django.urls import path
