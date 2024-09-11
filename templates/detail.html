@@ -6,7 +6,27 @@
 	<meta charset="utf-8">
 	<title>{{ detail_data.地区 }}{{ detail_data.小区名称 }}房源详情</title>
 	<link rel="stylesheet" href="{% static 'css/myStyle.css' %}" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 	<script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=RZjvl3UlCI81VcEwej6i7bRdpyigzqTd"></script>
+	<style>
+        .arima-button {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .arima-button i {
+            margin-right: 5px;
+        }
+
+        .arima-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 
 <body>
@@ -18,6 +38,19 @@
 		<div class="header_right">
 			<span class="header_title">{{ detail_data.城市 }}{{ detail_data.地区 }} {{ detail_data.小区名称 }}·{{ detail_data.所在区域 }}·{{ detail_data.装修情况 }}</span>
 			<span class="bottomLine"></span>
+		</div>
+		<div class="line"></div>
+
+		<div class="header_left" >
+			<span class="header_title">
+				<a href="/arima_forecast/">
+        			<button type="button" class="arima-button">
+            			<i class="fas fa-chart-line"></i>
+            				ARIMA 预测
+        			</button>
+    			</a>
+			</span>
+
 		</div>
 	</header>
 	<section class="section">

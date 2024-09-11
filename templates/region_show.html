@@ -6,8 +6,28 @@
   <meta charset="utf-8">
   <title>各地区房源信息</title>
 	<link rel="stylesheet" href="{% static 'css/myStyle.css' %}" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="{% static 'js/echarts.min.js' %}"></script>
     <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <style>
+        .arima-button {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .arima-button i {
+            margin-right: 5px;
+        }
+
+        .arima-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 
 <body>
@@ -19,6 +39,18 @@
     <div class="header_right">
       <span class="header_title">{{ city_name }}各地区房源信息</span>
       <span class="bottomLine"></span>
+    </div>
+	<div class="line"></div>
+
+    <div class="header_left" >
+		<span class="header_title">
+			<a href="/arima_forecast/">
+       			<button type="button" class="arima-button">
+           			<i class="fas fa-chart-line"></i>
+           				ARIMA 预测
+       			</button>
+    		</a>
+		</span>
     </div>
   </header>
   <section class="section">
