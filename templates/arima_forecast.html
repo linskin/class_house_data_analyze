@@ -197,15 +197,21 @@
     </a>
     <h3>邮箱验证</h3>
     <p style="font-size: 14px; color: #5e5e5e">请输入您的邮箱，我们将发送验证码到您的邮箱，验证后，您可以将图表发送至您的邮箱。</p>
+
+    <!-- 发送验证码表单 -->
     <form id="send-code-form">
         <input id="email" name="email" placeholder="请输入您的邮箱" required type="email">
-        <button type="submit">发送验证码</button>
-        <p id="send-code-message"></p>
+        <button id="send-code-btn" type="submit">发送验证码</button>
+        <p id="send-code-message" style="font-size: 12px; color: #007BFF; display: none;"></p>
+        <p id="send-code-error" style="font-size: 12px; color: red; display: none;"></p>
     </form>
-    <form id="verify-code-form">
+
+    <!-- 验证码验证表单 -->
+    <form id="verify-code-form" style="display: none;">
         <input id="code" name="code" placeholder="请输入验证码" required type="text">
-        <button type="submit">验证代码并发送图表</button>
-        <p id="verify-code-message"></p>
+        <button id="verify-code-btn" type="submit">验证并发送图表</button>
+        <p id="verify-code-message" style="font-size: 12px; color: #007BFF; display: none;"></p>
+        <p id="verify-code-error" style="font-size: 12px; color: red; display: none;"></p>
     </form>
 </div>
 
@@ -214,7 +220,6 @@
 <div id="overlay" style="display:none; /* 初始为隐藏 */ position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); /* 示例遮罩层样式 */"></div>
 
 <script>
-
     // 显示弹窗
     function showPopup() {
         document.getElementById('email-popup').style.display = 'block';
@@ -232,6 +237,11 @@
         e.preventDefault();
         var email = $('#email').val();
 
+        // 禁用按钮并显示加载状态
+        $('#send-code-btn').attr('disabled', true).text('发送中...');
+        $('#send-code-message').hide();
+        $('#send-code-error').hide();
+
         $.ajax({
             url: "{% url 'send_verification_email' %}",
             method: "POST",
@@ -240,10 +250,15 @@
                 csrfmiddlewaretoken: '{{ csrf_token }}'
             },
             success: function (response) {
-                $('#send-code-message').text(response.message);
+                $('#send-code-message').text(response.message).show();
+                $('#send-code-form').hide(); // 隐藏发送验证码表单
+                $('#verify-code-form').show(); // 显示验证码验证表单
             },
             error: function (response) {
-                $('#send-code-message').text(response.responseJSON.error);
+                $('#send-code-error').text(response.responseJSON.error).show();
+            },
+            complete: function () {
+                $('#send-code-btn').attr('disabled', false).text('发送验证码');
             }
         });
     });
@@ -254,8 +269,9 @@
         var email = $('#email').val();
         var code = $('#code').val();
 
-        // 发送图表前的提示信息
-        alert('正在发送图表，请稍候...');
+        $('#verify-code-btn').attr('disabled', true).text('验证中...');
+        $('#verify-code-message').hide();
+        $('#verify-code-error').hide();
 
         $.ajax({
             url: "{% url 'verify_code' %}",
@@ -266,36 +282,44 @@
                 csrfmiddlewaretoken: '{{ csrf_token }}'
             },
             success: function (response) {
-                $('#verify-code-message').text(response.message);
-
-                var chartImage = chart.getDataURL({
-                    type: 'png',
-                    pixelRatio: 2,
-                    backgroundColor: '#fff'
-                });
-
-                $.ajax({
-                    url: "{% url 'send_chart_email' %}",
-                    method: "POST",
-                    data: {
-                        email: email,
-                        chart_image: chartImage,
-                        csrfmiddlewaretoken: '{{ csrf_token }}'
-                    },
-                    success: function (response) {
-                        alert('图表已成功发送至邮箱');
-                        hidePopup(); // 发送成功后隐藏弹窗
-                    },
-                    error: function (response) {
-                        alert('发送图表时出错，请稍后再试');
-                    }
-                });
+                $('#verify-code-message').text(response.message).show();
+                sendChart(email); // 验证成功后发送图表
             },
             error: function (response) {
-                $('#verify-code-message').text(response.responseJSON.error);
+                $('#verify-code-error').text(response.responseJSON.error).show();
+            },
+            complete: function () {
+                $('#verify-code-btn').attr('disabled', false).text('验证并发送图表');
             }
         });
     });
+
+    // 发送图表到邮箱
+    function sendChart(email) {
+        var chartImage = chart.getDataURL({
+            type: 'png',
+            pixelRatio: 2,
+            backgroundColor: '#fff'
+        });
+
+        $.ajax({
+            url: "{% url 'send_chart_email' %}",
+            method: "POST",
+            data: {
+                email: email,
+                chart_image: chartImage,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function (response) {
+                alert('图表已成功发送至邮箱');
+                hidePopup(); // 发送成功后隐藏弹窗
+            },
+            error: function (response) {
+                alert('发送图表时出错，请稍后再试');
+            }
+        });
+    }
+
     // 从 Django 后端获取数据
     var dates = {{ dates|safe }};
     var actual_values = {{ actual_values|safe }};

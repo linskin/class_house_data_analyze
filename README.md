@@ -16,7 +16,7 @@
 
 ## 运行环境
 
-pmdarima django pymysql pandas pillow
+pmdarima django pymysql pandas pillow sqlalchemy
 
 numpy 1.26.4
 

@@ -3,7 +3,7 @@
   <component name="Black">
     <option name="sdkName" value="house" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="house" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="class_house_data_analyze" project-jdk-type="Python SDK" />
   <component name="PyCharmProfessionalAdvertiser">
     <option name="shown" value="true" />
   </component>
