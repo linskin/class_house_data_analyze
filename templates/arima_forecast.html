@@ -213,13 +213,29 @@
         <p id="verify-code-message" style="font-size: 12px; color: #007BFF; display: none;"></p>
         <p id="verify-code-error" style="font-size: 12px; color: red; display: none;"></p>
     </form>
+    <p id="countdown-timer" style="color: red; font-size: 14px;"></p> <!-- 倒计时显示 -->
 </div>
 
 <!-- Overlay -->
-<!--<div class="overlay" id="overlay"></div>-->
 <div id="overlay" style="display:none; /* 初始为隐藏 */ position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); /* 示例遮罩层样式 */"></div>
 
 <script>
+    // 倒计时功能
+    function startCountdown(seconds) {
+        var remainingTime = seconds;
+        var countdownInterval = setInterval(function () {
+            remainingTime--;
+            $('#countdown-timer').text('验证码有效时间: ' + remainingTime + '秒');
+            if (remainingTime <= 0) {
+                clearInterval(countdownInterval);
+                $('#countdown-timer').text('验证码已过期，请重新发送。');
+                $('#send-code-form').show();  // 重新显示发送验证码表单
+                $('#verify-code-form').hide(); // 隐藏验证码验证表单
+                $('#send-code-btn').prop('disabled', false);  // 重新启用发送按钮
+                $('#send-code-message').hide();
+            }
+        }, 1000);  // 每秒更新一次
+    }
     // 显示弹窗
     function showPopup() {
         document.getElementById('email-popup').style.display = 'block';
@@ -236,12 +252,11 @@
     $('#send-code-form').on('submit', function (e) {
         e.preventDefault();
         var email = $('#email').val();
-
+        $('#send-code-message').show();
         // 禁用按钮并显示加载状态
         $('#send-code-btn').attr('disabled', true).text('发送中...');
         $('#send-code-message').hide();
         $('#send-code-error').hide();
-
         $.ajax({
             url: "{% url 'send_verification_email' %}",
             method: "POST",
@@ -253,6 +268,7 @@
                 $('#send-code-message').text(response.message).show();
                 $('#send-code-form').hide(); // 隐藏发送验证码表单
                 $('#verify-code-form').show(); // 显示验证码验证表单
+                startCountdown(120);
             },
             error: function (response) {
                 $('#send-code-error').text(response.responseJSON.error).show();
@@ -283,6 +299,7 @@
             },
             success: function (response) {
                 $('#verify-code-message').text(response.message).show();
+                $('#countdown-timer').hide();
                 sendChart(email); // 验证成功后发送图表
             },
             error: function (response) {
