@@ -194,7 +194,7 @@ def send_verification_email(request):
             send_mail(
                 subject='Your verification code',
                 message=f'Your verification code is {code}',
-                from_email='your_email@gmail.com',
+                from_email='linskin@foxmail.com',
                 recipient_list=[email],
             )
 
@@ -253,7 +253,7 @@ def send_chart_email(request):
             email_message = EmailMessage(
                 subject=email_subject,
                 body=email_body,
-                from_email='hong1360293790@gmail.com',
+                from_email='linskin@foxmail.com',
                 to=[email]
             )
             email_message.attach(

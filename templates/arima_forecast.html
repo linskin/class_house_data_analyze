@@ -268,7 +268,7 @@
                 $('#send-code-message').text(response.message).show();
                 $('#send-code-form').hide(); // 隐藏发送验证码表单
                 $('#verify-code-form').show(); // 显示验证码验证表单
-                startCountdown(120);
+                startCountdown(60);
             },
             error: function (response) {
                 $('#send-code-error').text(response.responseJSON.error).show();
@@ -299,6 +299,7 @@
             },
             success: function (response) {
                 $('#verify-code-message').text(response.message).show();
+                $('#verify-code-btn').attr('disabled', true).text('验证成功')
                 $('#countdown-timer').hide();
                 sendChart(email); // 验证成功后发送图表
             },

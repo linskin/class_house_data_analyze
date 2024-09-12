@@ -14,4 +14,4 @@ class EmailVerificationCode(models.Model):
         """判断验证码是否过期"""
         if self.created_at is None:
             return True  # 如果 created_at 为空，认为验证码已过期
-        return timezone.now() > self.created_at + timedelta(seconds=125)
+        return timezone.now() > self.created_at + timedelta(seconds=61)
