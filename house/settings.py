@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-&g7@k)t&89h!67-!1!2#ffw(zm7-v@8*1b)kj5x#+^=v&vm588
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '172.30.43.174'
+    'localhost'
 ]
 
 # Application definition
@@ -127,10 +127,18 @@ STATICFILES_DIRS = (
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # 邮件配置
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'hong1360293790@gmail.com'
+# EMAIL_HOST_PASSWORD = 'hnmgzwiovtlencsi'  # 邮箱的应用专用密码
+# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'hong1360293790@gmail.com'
-EMAIL_HOST_PASSWORD = 'hnmgzwiovtlencsi'  # 邮箱的应用专用密码
+EMAIL_HOST = 'smtp.qq.com'  # Foxmail使用的SMTP服务器是腾讯QQ邮箱的SMTP服务器
+EMAIL_PORT = 465  # 使用SSL连接的端口
+EMAIL_USE_SSL = True  # 使用SSL加密
+EMAIL_HOST_USER = 'linskin@foxmail.com'  # 替换为你的Foxmail邮箱地址
+EMAIL_HOST_PASSWORD = 'xbfmyzdqqlljggcd'  # 在QQ邮箱设置中获取的授权码
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
