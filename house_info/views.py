@@ -159,9 +159,10 @@ def plot_arima_forecast(request):
             except Exception:
                 # 处理其他异常并将其传递到前端
                 return render(request, 'arima_form.html', {'form': form,
-                                                           'message': ['发生错误：文件不符合标准格式',
+                                                           'message': ['发生错误：文件不符合标准格式或预测步数过长',
                                                                        '标准格式：表数据须含有‘日期’和‘房屋单价‘两列',
-                                                                       '文件大小不超过5MB']})
+                                                                       '文件大小不超过5MB',
+                                                                       '预测步数不超过1000']})
     else:
         form = ARIMAForm()
 
