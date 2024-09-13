@@ -6,12 +6,11 @@
 
 ![ARIMA预测分析功能文件上传页面](https://github.com/user-attachments/assets/8364ee04-ba77-4b14-8cf5-64558d3e3f7f)
 
-
 ![ARIMA预测分析功能预测结果展示页面](https://github.com/user-attachments/assets/b4d1db2d-fdee-4536-b1cd-fff393b2d756)
 
 ![ARIMA预测分析功能邮件发送页面](https://github.com/user-attachments/assets/ad891f4a-0e9a-4ee2-819c-b23953b3e7b2)
 
-注：图表邮件发送使用的是gmail的smtp，使用时注意网络代理
+注：图表邮件发送使用的是gmail的smtp，使用时注意网络代理（现已改用foxmail）
 
 
 ## 运行环境
@@ -19,6 +18,8 @@
 mysql 8.0
 
 python >= 3.9
+
+**依赖库导入**
 
 `pip install -r .\requirements.txt`
 
@@ -28,7 +29,7 @@ python >= 3.9
 
 #### 数据库架构及表格创建
 
-![image](https://github.com/user-attachments/assets/b344249f-ef58-4a20-b6dc-fa66dfed6c27)
+![数据库架构表格结构](https://github.com/user-attachments/assets/b344249f-ef58-4a20-b6dc-fa66dfed6c27)
 
 ```sql
 create schema house collate latin1_swedish_ci;
@@ -66,7 +67,7 @@ create table house_info
 
 **打开项目文件夹data_processing**
 
-![批注 (1)](https://github.com/user-attachments/assets/f72ebc89-9cc3-49f8-8602-126bd73235c9)
+![sqlbuilder位置](https://github.com/user-attachments/assets/f72ebc89-9cc3-49f8-8602-126bd73235c9)
 
 **运行sql_bulider.py**
 
@@ -78,7 +79,13 @@ python .\sql_bulider.py
 
 运行生成的sql文件即可
 
-![批注 (2)](https://github.com/user-attachments/assets/478843c6-ed50-4d2e-95c0-cc06449f50ac)
+![生成的sql文件位置](https://github.com/user-attachments/assets/09b5d988-3e53-44c1-9606-56a18074144b)
+
+#### 数据库连接配置
+
+![数据库连接配置](https://github.com/user-attachments/assets/478843c6-ed50-4d2e-95c0-cc06449f50ac)
+
+#### 启动
 
 切换至项目根目录
 
@@ -92,5 +99,5 @@ python ./manage runsever
 python ./manage runsever 0.0.0.0:8000
 ```
 
-![image](https://github.com/user-attachments/assets/dc993e9a-6659-4597-9538-bbacaa9e7172)
+![运行示意图](https://github.com/user-attachments/assets/dc993e9a-6659-4597-9538-bbacaa9e7172)
 
