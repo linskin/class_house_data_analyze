@@ -23,4 +23,4 @@ typing_extensions
 tzdata
 urllib3
 pypinyin
-numpy==1.26.4
+numpy<=1.26.4

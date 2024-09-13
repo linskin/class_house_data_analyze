@@ -4,12 +4,12 @@
 
 ## 房价预测
 
-![image](https://github.com/user-attachments/assets/8364ee04-ba77-4b14-8cf5-64558d3e3f7f)
+![ARIMA预测分析功能文件上传页面](https://github.com/user-attachments/assets/8364ee04-ba77-4b14-8cf5-64558d3e3f7f)
 
 
 ![ARIMA预测分析功能预测结果展示页面](https://github.com/user-attachments/assets/b4d1db2d-fdee-4536-b1cd-fff393b2d756)
 
-![image](https://github.com/user-attachments/assets/ad891f4a-0e9a-4ee2-819c-b23953b3e7b2)
+![ARIMA预测分析功能邮件发送页面](https://github.com/user-attachments/assets/ad891f4a-0e9a-4ee2-819c-b23953b3e7b2)
 
 注：图表邮件发送使用的是gmail的smtp，使用时注意网络代理
 
@@ -18,13 +18,51 @@
 
 mysql 8.0
 
-python 3.10
+python >= 3.9
 
-###### `pip install -r .\requirements.txt`
+`pip install -r .\requirements.txt`
 
 ## 运行说明
 
 ### 数据库配置
+
+#### 数据库架构及表格创建
+
+![image](https://github.com/user-attachments/assets/b344249f-ef58-4a20-b6dc-fa66dfed6c27)
+
+```sql
+create schema house collate latin1_swedish_ci;
+create table house_info
+(
+    城市     varchar(20)  null,
+    地区     varchar(20)  null,
+    链接     varchar(100) null,
+    小区名称 varchar(20)  null,
+    所在区域 varchar(20)  null,
+    房屋户型 varchar(20)  null,
+    所在楼层 varchar(20)  null,
+    建筑面积 varchar(20)  null,
+    户型结构 varchar(20)  null,
+    房屋朝向 varchar(20)  null,
+    建筑结构 varchar(20)  null,
+    装修情况 varchar(20)  null,
+    梯户比例 varchar(20)  null,
+    挂牌时间 varchar(20)  null,
+    交易权属 varchar(60)  null,
+    产权所属 varchar(60)  null,
+    抵押信息 varchar(60)  null,
+    房价     varchar(50)  null,
+    经度     varchar(20)  null,
+    纬度     varchar(20)  null,
+    核心卖点 varchar(120) null,
+    小区介绍 varchar(120) null,
+    户型介绍 varchar(120) null,
+    交通出行 varchar(50)  null
+)
+    collate = utf8mb4_unicode_ci;
+```
+
+#### 数据填入
 
 **打开项目文件夹data_processing**
 
@@ -32,19 +70,27 @@ python 3.10
 
 **运行sql_bulider.py**
 
-创建sql架构
-
-![image](https://github.com/user-attachments/assets/b344249f-ef58-4a20-b6dc-fa66dfed6c27)
+从项目根目录
+```python
+cd .\data_processing\
+python .\sql_bulider.py
+```
 
 运行生成的sql文件即可
-
-**数据库配置**
 
 ![批注 (2)](https://github.com/user-attachments/assets/478843c6-ed50-4d2e-95c0-cc06449f50ac)
 
 切换至项目根目录
 
-`python ./manage runsever`
+```python
+python ./manage runsever
+```
+
+指定端口（如果需要）
+
+```python
+python ./manage runsever 0.0.0.0:8000
+```
 
 ![image](https://github.com/user-attachments/assets/dc993e9a-6659-4597-9538-bbacaa9e7172)
 
