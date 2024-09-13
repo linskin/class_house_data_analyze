@@ -16,15 +16,11 @@
 
 ## 运行环境
 
-pmdarima django pymysql pandas pillow sqlalchemy
-
-numpy 1.26.4
-
-echarts
-
 mysql 8.0
 
 python 3.10
+
+###### `pip install -r .\requirements.txt`
 
 ## 运行说明
 
@@ -48,7 +44,7 @@ python 3.10
 
 切换至项目根目录
 
-python ./manage runsever
+`python ./manage runsever`
 
 ![image](https://github.com/user-attachments/assets/dc993e9a-6659-4597-9538-bbacaa9e7172)
 
