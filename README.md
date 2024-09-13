@@ -10,7 +10,7 @@
 
 ![ARIMA预测分析功能邮件发送页面](https://github.com/user-attachments/assets/ad891f4a-0e9a-4ee2-819c-b23953b3e7b2)
 
-注：图表邮件发送使用的是gmail的smtp，使用时注意网络代理（现已改用foxmail）
+注：图表邮件发送使用的是gmail的smtp，使用时注意网络代理（现已改用foxmail，在国内使用无需配置代理）
 
 
 ## 运行环境
