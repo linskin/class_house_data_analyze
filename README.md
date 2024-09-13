@@ -71,7 +71,8 @@ create table house_info
 
 **运行sql_bulider.py**
 
-从项目根目录
+**切换至项目根目录**
+
 ```python
 cd .\data_processing\
 python .\sql_bulider.py
@@ -87,7 +88,7 @@ python .\sql_bulider.py
 
 #### 启动
 
-切换至项目根目录
+**切换至项目根目录**
 
 ```python
 python ./manage runsever
